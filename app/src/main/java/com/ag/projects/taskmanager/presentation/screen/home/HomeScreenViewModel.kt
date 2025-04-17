@@ -26,7 +26,7 @@ class HomeScreenViewModel(
     }
 
 
-    private fun getAllTasks() {
+     fun getAllTasks() {
         viewModelScope.launch {
             try {
                 getAllTasksUseCase().collect {
