@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +41,7 @@ fun TaskItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .defaultMinSize(minHeight = 80.dp)
+            .defaultMinSize(minHeight = 100.dp)
             .padding(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -64,7 +65,10 @@ fun TaskItem(
                     checked = isCompleted,
                     onCheckedChange = {
                         onCheckedChanged(it)
-                    }
+                    },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = Color.Green,
+                    )
                 )
 
                 Text(

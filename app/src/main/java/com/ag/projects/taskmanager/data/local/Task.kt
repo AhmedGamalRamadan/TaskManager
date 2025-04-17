@@ -22,4 +22,4 @@ enum class Priority {
     LOW, MEDIUM, HIGH
 }
 enum class TaskFilter { ALL, COMPLETED, PENDING }
-enum class TaskSort { PRIORITY, DUE_DATE, TITLE, CREATION_DATE }
+enum class TaskSort { PRIORITY, TITLE, CREATION_DATE }
