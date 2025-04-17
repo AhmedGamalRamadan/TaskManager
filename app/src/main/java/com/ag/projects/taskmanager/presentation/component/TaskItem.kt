@@ -1,9 +1,11 @@
 package com.ag.projects.taskmanager.presentation.component
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -34,6 +36,7 @@ fun TaskItem(
     onDelete: (Int) -> Unit
 ) {
 
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -47,39 +50,58 @@ fun TaskItem(
         )
     ) {
 
-        Row(
+        Column(
             modifier = modifier
-                .fillMaxWidth()
-                .padding(7.dp),
-
-            ) {
-            Checkbox(
-                checked = isCompleted,
-                onCheckedChange = {
-                    onCheckedChanged(it)
-                }
-            )
-
-            Text(
-                text = task.title,
+                .fillMaxSize()
+                .padding(7.dp)
+        ) {
+            Row(
                 modifier = modifier
-                    .weight(1f),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                fontSize = 22.sp,
-                textDecoration = if (task.isCompleted) TextDecoration.LineThrough else TextDecoration.None,
-            )
+                    .fillMaxWidth(),
+                ) {
 
-            Icon(
-                imageVector = Icons.Filled.Delete,
-                contentDescription = "Delete",
-                tint = Color.Red,
-                modifier = modifier
-                    .size(40.dp)
-                    .clickable {
-                        onDelete(task.id)
+                Checkbox(
+                    checked = isCompleted,
+                    onCheckedChange = {
+                        onCheckedChanged(it)
                     }
-            )
+                )
+
+                Text(
+                    text = task.title,
+                    modifier = modifier
+                        .weight(1f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = 22.sp,
+                    textDecoration =
+                    if (task.isCompleted)
+                        TextDecoration.LineThrough
+                    else TextDecoration.None,
+                )
+
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = "Delete",
+                    tint = Color.Red,
+                    modifier = modifier
+                        .size(40.dp)
+                        .clickable {
+                            onDelete(task.id)
+                        }
+                )
+            }
+
+            Row(
+                modifier = modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                Text(text = task.priority.toString())
+                Text(text = task.createdAt)
+
+            }
         }
     }
 }

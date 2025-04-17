@@ -15,7 +15,7 @@ data class Task(
     val priority: Priority = Priority.MEDIUM,
 //    val dueDate: Date? = null,
     val isCompleted: Boolean = false,
-    val createdAt: Date = Date()
+    val createdAt: String
 )
 
 enum class Priority {
