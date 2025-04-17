@@ -16,9 +16,7 @@ data class Task(
 //    val dueDate: Date? = null,
     val isCompleted: Boolean = false,
     val createdAt: Date = Date()
-) {
-   // fun dueDateAsLocalDate(): LocalDate? = dueDate?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate()
-}
+)
 
 enum class Priority {
     LOW, MEDIUM, HIGH

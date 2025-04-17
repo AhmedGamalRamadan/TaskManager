@@ -22,7 +22,7 @@ interface TaskDao {
     fun getTasksByCompletion(isCompleted: Boolean): Flow<List<Task>>
 
     @Query("SELECT * FROM tasks WHERE priority = :priority ORDER BY createdAt DESC")
-    fun getTasksByPriority(priority: Priority): Flow<List<Task>>
+    fun getTasksSortedByPriority(priority: Priority): Flow<List<Task>>
 
     @Query("SELECT * FROM tasks ORDER BY createdAt ASC")
     fun getTasksSortedByDueDate(): Flow<List<Task>>

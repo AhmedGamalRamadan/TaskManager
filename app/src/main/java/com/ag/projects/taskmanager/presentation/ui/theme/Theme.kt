@@ -1,4 +1,4 @@
-package com.ag.projects.taskmanager.ui.theme
+package com.ag.projects.taskmanager.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
