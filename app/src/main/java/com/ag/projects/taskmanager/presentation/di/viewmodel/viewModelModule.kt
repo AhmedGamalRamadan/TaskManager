@@ -2,11 +2,12 @@ package com.ag.projects.taskmanager.presentation.di.viewmodel
 
 import com.ag.projects.taskmanager.presentation.screen.create.CreateTaskScreenViewModel
 import com.ag.projects.taskmanager.presentation.screen.home.HomeScreenViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
 
-    single {
+    viewModel {
         HomeScreenViewModel(
             get(),
             get(),
@@ -15,7 +16,7 @@ val viewModelModule = module {
         )
     }
 
-    single {
+    viewModel {
         CreateTaskScreenViewModel(get())
     }
 }

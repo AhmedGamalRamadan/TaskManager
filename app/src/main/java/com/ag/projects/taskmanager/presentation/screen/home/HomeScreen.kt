@@ -21,10 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.ag.projects.taskmanager.data.local.Task
 import com.ag.projects.taskmanager.presentation.component.TaskItem
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
@@ -32,7 +31,7 @@ fun HomeScreen(
     navHostController: NavHostController
 ) {
 
-    val viewModel: HomeScreenViewModel = getViewModel()
+    val viewModel: HomeScreenViewModel = koinViewModel()
     val scope = rememberCoroutineScope()
     val tasks by viewModel.allTasks.collectAsStateWithLifecycle()
 

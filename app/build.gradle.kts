@@ -2,9 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlin.serialization)
+//    alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
-//    id("kotlinx-serialization")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -60,16 +60,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Lifecycle utilities for Compose
     implementation(libs.androidx.lifecycle.runtime.compose)
-
-    // Navigation
-    implementation(libs.androidx.navigation.compose)
 
     // koin
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.navigation)
     implementation(libs.koin.androidx.compose)
     testImplementation(libs.koin.test.junit4)
+    implementation("io.insert-koin:koin-androidx-compose:3.2.0")
 
     // Room
     implementation(libs.androidx.room.ktx)
@@ -78,7 +77,10 @@ dependencies {
 
     //serialization
     implementation(libs.kotlinx.serialization.json)
+
 //    implementation(libs.plugins.kotlin.serialization)
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
 
 
     // Extended Icons

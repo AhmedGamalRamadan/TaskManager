@@ -11,19 +11,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ag.projects.taskmanager.data.local.Priority
 import com.ag.projects.taskmanager.data.local.Task
-import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
+import com.ag.projects.taskmanager.presentation.component.CustomTextField
+import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -41,11 +38,10 @@ import java.util.Date
 @Composable
 fun CreateTaskScreen(
     modifier: Modifier = Modifier,
-    navHostController: NavHostController
+    navHostController: NavHostController,
 ) {
 
-    val viewModel: CreateTaskScreenViewModel = getViewModel()
-    val scope = rememberCoroutineScope()
+    val viewModel: CreateTaskScreenViewModel = koinViewModel()
 
     val sdf = SimpleDateFormat("dd MMMM, yyyy -HH:mm")
     val currentDateAndTime :String = sdf.format(Date())
@@ -59,7 +55,7 @@ fun CreateTaskScreen(
     }
 
     val priorities = remember {
-        mutableListOf(Priority.LOW, Priority.MEDIUM, Priority.HIGH)
+        mutableStateListOf(Priority.LOW, Priority.MEDIUM, Priority.HIGH)
     }
 
     var selectedOption by remember { mutableStateOf(Priority.MEDIUM) }
@@ -73,36 +69,20 @@ fun CreateTaskScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth(),
+        CustomTextField(
+            modifier = modifier,
             value = title,
-            onValueChange = {
-                title = it
-            },
-            colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White,
-            ),
-            label = { Text("Title") },
-            shape = RoundedCornerShape(15.dp)
+            onValueChange = { title = it },
+            label = "Title"
         )
 
         Spacer(Modifier.height(8.dp))
 
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth(),
+        CustomTextField(
+            modifier = modifier,
             value = description,
-            onValueChange = {
-                description = it
-            },
-            colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White,
-            ),
-            label = { Text("Description") },
-            shape = RoundedCornerShape(15.dp)
+            onValueChange = { description = it },
+            label = "Description"
         )
 
         priorities.forEach { option ->
@@ -131,7 +111,6 @@ fun CreateTaskScreen(
 
         Button(
             onClick = {
-                scope.launch {
                     viewModel.upsertTask(
                         Task(
                             title = title,
@@ -140,9 +119,10 @@ fun CreateTaskScreen(
                             createdAt = currentDateAndTime
                         )
                     )
-                }
-                navHostController.navigateUp()
-            }
+                    navHostController.navigateUp()
+            },
+            enabled = title.trim().isNotEmpty(),
+
         ) {
             Text(
                 text = "Save"

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 sealed interface Screen {
 
     @Serializable
-    data class Home(val id:Int) :Screen
+    data object Home :Screen
 
     @Serializable
     data object CreateTask :Screen
