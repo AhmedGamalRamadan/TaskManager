@@ -8,33 +8,33 @@ import kotlinx.coroutines.flow.Flow
 
 class TaskLocalRepositoryImpl(
     private val taskDatabase: TaskDatabase
-) :TaskLocalRepository{
+) : TaskLocalRepository {
 
     override suspend fun upsert(task: Task) {
         taskDatabase.taskDao().upsert(task)
     }
 
-    override suspend fun delete(task: Task) {
-        taskDatabase.taskDao().delete(task)
+    override suspend fun delete(id: Int) {
+        taskDatabase.taskDao().delete(id)
     }
 
-    override fun getAllTasks(): Flow<List<Task>> {
+    override suspend fun getAllTasks(): Flow<List<Task>> {
         return taskDatabase.taskDao().getAllTasks()
     }
 
-    override fun getTasksByCompletion(isCompleted: Boolean): Flow<List<Task>> {
+    override suspend fun getTasksByCompletion(isCompleted: Boolean): Flow<List<Task>> {
         return taskDatabase.taskDao().getTasksByCompletion(isCompleted)
     }
 
-    override fun getTasksSortedByPriority(priority: Priority): Flow<List<Task>> {
+    override suspend fun getTasksSortedByPriority(priority: Priority): Flow<List<Task>> {
         return taskDatabase.taskDao().getTasksSortedByPriority(priority)
     }
 
-    override fun getTasksSortedByDueDate(): Flow<List<Task>> {
+    override suspend fun getTasksSortedByDueDate(): Flow<List<Task>> {
         return taskDatabase.taskDao().getTasksSortedByDueDate()
     }
 
-    override fun getTasksSortedByTitle(): Flow<List<Task>> {
+    override suspend fun getTasksSortedByTitle(): Flow<List<Task>> {
         return taskDatabase.taskDao().getTasksSortedByTitle()
     }
 }
