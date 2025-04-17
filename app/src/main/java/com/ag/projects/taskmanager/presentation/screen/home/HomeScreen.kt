@@ -56,6 +56,19 @@ fun HomeScreen(
 
     val bottomSheetState = rememberModalBottomSheetState()
 
+    val allFilters = remember {
+        mutableListOf(
+            "All",
+            "Completed",
+            "Pending",
+            "Sort By Title",
+            "Sort By Date",
+            "Sort By Low ",
+            "Sort By Medium ",
+            "Sort By High "
+        )
+    }
+
     val filters = remember {
         mutableListOf(
             TaskFilter.ALL,
@@ -101,15 +114,20 @@ fun HomeScreen(
                         .wrapContentHeight(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    itemsIndexed(filters) { index, filter ->
+                    itemsIndexed(allFilters) { index, filter ->
                         val isSelected = selectedIndex == index
                         Button(
                             onClick = {
                                 selectedIndex = index
-                                when (filter) {
-                                    TaskFilter.ALL -> viewModel.getAllTasks()
-                                    TaskFilter.COMPLETED -> viewModel.getCompletedTasks(isCompleted = true)
-                                    TaskFilter.PENDING -> viewModel.getCompletedTasks(isCompleted = false)
+                                when (index) {
+                                    0-> viewModel.getAllTasks()
+                                    1-> viewModel.getCompletedTasks(isCompleted = true)
+                                    2-> viewModel.getCompletedTasks(isCompleted = false)
+                                    3-> viewModel.getTasksSortedByTitle()
+                                    4-> viewModel.getTasksSortedByDate()
+                                    5-> viewModel.getTasksSortedByPriority(priority = Priority.LOW)
+                                    6-> viewModel.getTasksSortedByPriority(priority = Priority.MEDIUM)
+                                    7-> viewModel.getTasksSortedByPriority(priority = Priority.HIGH)
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(
