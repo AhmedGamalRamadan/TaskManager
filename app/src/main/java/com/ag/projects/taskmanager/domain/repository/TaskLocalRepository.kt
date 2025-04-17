@@ -10,13 +10,13 @@ interface TaskLocalRepository {
 
     suspend fun delete(id: Int)
 
-     fun getAllTasks(): Flow<List<Task>>
+    fun getAllTasks(): Flow<List<Task>>
 
-     fun getTasksByCompletion(isCompleted: Boolean): Flow<List<Task>>
+    fun getTasksByCompletion(isCompleted: Boolean): Flow<List<Task>>
 
-     fun getTasksSortedByPriority(priority: Priority): Flow<List<Task>>
+    fun getTasksSortedByPriority(priority: Priority): Flow<List<Task>>
 
-     fun getTasksSortedByDueDate(): Flow<List<Task>>
+    fun getTasksSortedByDueDate(): Flow<List<Task>>
 
-     fun getTasksSortedByTitle(): Flow<List<Task>>
+    fun getTasksSortedByTitle(): Flow<List<Task>>
 }

@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ag.projects.taskmanager.data.local.Priority
 import com.ag.projects.taskmanager.data.local.Task
-import com.ag.projects.taskmanager.utils.Screen
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 import java.util.Date
 
@@ -39,6 +40,8 @@ fun CreateTaskScreen(
 ) {
 
     val viewModel: CreateTaskScreenViewModel = getViewModel()
+    val scope = rememberCoroutineScope()
+
 
     var title by remember {
         mutableStateOf("")
@@ -64,6 +67,8 @@ fun CreateTaskScreen(
     ) {
 
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
             value = title,
             onValueChange = {
                 title = it
@@ -72,13 +77,13 @@ fun CreateTaskScreen(
                 unfocusedContainerColor = Color.White,
                 focusedContainerColor = Color.White,
             ),
-            label = {
-                Text("Title")
-            },
+            label = { Text("Title") },
             shape = RoundedCornerShape(15.dp)
         )
 
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
             value = description,
             onValueChange = {
                 description = it
@@ -87,9 +92,7 @@ fun CreateTaskScreen(
                 unfocusedContainerColor = Color.White,
                 focusedContainerColor = Color.White,
             ),
-            label = {
-                Text("Description")
-            },
+            label = { Text("Description") },
             shape = RoundedCornerShape(15.dp)
         )
 
@@ -119,15 +122,16 @@ fun CreateTaskScreen(
 
         Button(
             onClick = {
-                viewModel.upsertTask(
-                    Task(
-                        title = title,
-                        description = description,
-                        priority = selectedOption,
-                        isCompleted = false,
-                        createdAt = Date()
+                scope.launch {
+                    viewModel.upsertTask(
+                        Task(
+                            title = title,
+                            description = description,
+                            priority = selectedOption,
+                            createdAt = Date()
+                        )
                     )
-                )
+                }
                 navHostController.navigateUp()
             }
         ) {
@@ -135,7 +139,6 @@ fun CreateTaskScreen(
                 text = "Save"
             )
         }
-
-
     }
 }
+

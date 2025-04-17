@@ -1,11 +1,12 @@
 package com.ag.projects.taskmanager.presentation.component
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
@@ -16,12 +17,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.ag.projects.taskmanager.data.local.Task
 
 @Composable
@@ -29,7 +29,7 @@ fun TaskItem(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     task: Task,
-    isChecked: Boolean,
+    isCompleted: Boolean,
     onCheckedChanged: (Boolean) -> Unit,
     onDelete: (Int) -> Unit
 ) {
@@ -54,7 +54,7 @@ fun TaskItem(
 
             ) {
             Checkbox(
-                checked = isChecked,
+                checked = isCompleted,
                 onCheckedChange = {
                     onCheckedChanged(it)
                 }
@@ -66,7 +66,8 @@ fun TaskItem(
                     .weight(1f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                fontSize = 22.sp
+                fontSize = 22.sp,
+                textDecoration = if (task.isCompleted) TextDecoration.LineThrough else TextDecoration.None,
             )
 
             Icon(
@@ -74,6 +75,7 @@ fun TaskItem(
                 contentDescription = "Delete",
                 tint = Color.Red,
                 modifier = modifier
+                    .size(40.dp)
                     .clickable {
                         onDelete(task.id)
                     }

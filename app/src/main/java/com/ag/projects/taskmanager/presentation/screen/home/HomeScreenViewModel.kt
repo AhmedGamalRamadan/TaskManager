@@ -18,44 +18,56 @@ class HomeScreenViewModel(
     private val upsertUseCase: UpsertUseCase
 ) : ViewModel() {
 
-    private val _tasksState = MutableStateFlow<List<Task>>(emptyList())
-    val tasksState = _tasksState.asStateFlow()
+    private val _allTasks = MutableStateFlow<List<Task>>(emptyList())
+    val allTasks = _allTasks.asStateFlow()
+
+    init {
+        getAllTasks()
+    }
 
 
-     fun getAllTasks() = viewModelScope.launch {
-        try {
-            getAllTasksUseCase().collect { tasks ->
-                _tasksState.emit(tasks)
+    private fun getAllTasks() {
+        viewModelScope.launch {
+            try {
+                getAllTasksUseCase().collect {
+                    _allTasks.emit(it)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 
-    fun getCompletedTasks(isCompleted: Boolean) = viewModelScope.launch {
-        try {
-            getCompletedTasksUseCase(isCompleted = isCompleted).collect { tasks ->
-                _tasksState.emit(tasks)
+    fun getCompletedTasks(isCompleted: Boolean) {
+        viewModelScope.launch {
+            try {
+                getCompletedTasksUseCase(isCompleted = isCompleted).collect {
+                    _allTasks.emit(it)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 
-    fun deleteTask(id:Int)=viewModelScope.launch {
-        try {
-            deleteUseCase(id)
-        }catch (e:Exception){
-            e.printStackTrace()
+
+    fun deleteTask(id: Int) {
+        viewModelScope.launch {
+            try {
+                deleteUseCase(id)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
-    fun upsertTask(task: Task)=viewModelScope.launch {
-        try {
-            upsertUseCase(task)
-        }catch (e:Exception){
-            e.printStackTrace()
+    fun upsertTask(task: Task) {
+        viewModelScope.launch {
+            try {
+                upsertUseCase(task)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

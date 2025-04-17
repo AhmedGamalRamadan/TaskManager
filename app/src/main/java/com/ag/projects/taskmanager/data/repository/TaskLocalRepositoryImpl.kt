@@ -18,23 +18,23 @@ class TaskLocalRepositoryImpl(
         taskDatabase.taskDao().delete(id)
     }
 
-    override  fun getAllTasks(): Flow<List<Task>> {
+    override fun getAllTasks(): Flow<List<Task>> {
         return taskDatabase.taskDao().getAllTasks()
     }
 
-    override  fun getTasksByCompletion(isCompleted: Boolean): Flow<List<Task>> {
+    override fun getTasksByCompletion(isCompleted: Boolean): Flow<List<Task>> {
         return taskDatabase.taskDao().getTasksByCompletion(isCompleted)
     }
 
-    override  fun getTasksSortedByPriority(priority: Priority): Flow<List<Task>> {
+    override fun getTasksSortedByPriority(priority: Priority): Flow<List<Task>> {
         return taskDatabase.taskDao().getTasksSortedByPriority(priority)
     }
 
-    override  fun getTasksSortedByDueDate(): Flow<List<Task>> {
+    override fun getTasksSortedByDueDate(): Flow<List<Task>> {
         return taskDatabase.taskDao().getTasksSortedByDueDate()
     }
 
-    override  fun getTasksSortedByTitle(): Flow<List<Task>> {
+    override fun getTasksSortedByTitle(): Flow<List<Task>> {
         return taskDatabase.taskDao().getTasksSortedByTitle()
     }
 }

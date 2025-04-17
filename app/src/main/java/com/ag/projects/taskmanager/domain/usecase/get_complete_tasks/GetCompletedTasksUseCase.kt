@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 class GetCompletedTasksUseCase(
     private val taskLocalRepository: TaskLocalRepository
 ) {
-     operator fun invoke(isCompleted: Boolean): Flow<List<Task>> =
+    operator fun invoke(isCompleted: Boolean): Flow<List<Task>> =
         taskLocalRepository.getTasksByCompletion(isCompleted)
 
 }

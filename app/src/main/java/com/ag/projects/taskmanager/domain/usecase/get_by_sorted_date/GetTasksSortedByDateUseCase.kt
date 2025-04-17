@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 class GetTasksSortedByDateUseCase(
     private val taskLocalRepository: TaskLocalRepository
 ) {
-     operator fun invoke(): Flow<List<Task>> = taskLocalRepository.getTasksSortedByDueDate()
+    operator fun invoke(): Flow<List<Task>> = taskLocalRepository.getTasksSortedByDueDate()
 
 }

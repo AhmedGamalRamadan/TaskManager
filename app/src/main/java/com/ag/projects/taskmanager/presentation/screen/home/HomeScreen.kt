@@ -2,9 +2,7 @@ package com.ag.projects.taskmanager.presentation.screen.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -12,8 +10,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.ag.projects.taskmanager.data.local.Task
 import com.ag.projects.taskmanager.presentation.component.TaskItem
-import com.ag.projects.taskmanager.presentation.component.TaskProgressIndicator
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -36,14 +34,19 @@ fun HomeScreen(
 
     val viewModel: HomeScreenViewModel = getViewModel()
     val scope = rememberCoroutineScope()
+    val tasks by viewModel.allTasks.collectAsStateWithLifecycle()
 
-    val tasks by viewModel.tasksState.collectAsStateWithLifecycle()
-//    val allTasksCount = tasks.size / viewModel.getCompletedTasks(isCompleted = true)
-//    val completedTasksCount = viewModel.getCompletedTasks(isCompleted = true)
-
-    LaunchedEffect(true) {
-        viewModel.getAllTasks()
-    }
+//    (1..20).map {
+//        scope.launch {
+//            viewModel.upsertTask(
+//                Task(
+//                    title = it.toString(),
+//                    description = it.toString(),
+//
+//                    )
+//            )
+//        }
+//    }
 
     Box(
         modifier = Modifier
@@ -55,7 +58,8 @@ fun HomeScreen(
             modifier = modifier
                 .fillMaxSize()
         ) {
-            items(tasks) { task ->
+
+            items(tasks, key = { it.id }) { task ->
 
                 var isCompleted by remember {
                     mutableStateOf(task.isCompleted)
@@ -64,18 +68,16 @@ fun HomeScreen(
                 TaskItem(
                     navHostController = navHostController,
                     task = task,
-                    isChecked = isCompleted,
-                    onCheckedChanged = {
-                        isCompleted = it
+                    isCompleted = isCompleted,
+                    onCheckedChanged = { checked ->
+                        isCompleted = checked
+                        val updatedTask = task.copy(isCompleted = checked)
+
                         scope.launch {
-                            viewModel.upsertTask(task)
+                            viewModel.upsertTask(updatedTask)
                         }
                     },
-                    onDelete = {
-                        scope.launch {
-                            viewModel.deleteTask(task.id)
-                        }
-                    }
+                    onDelete = { viewModel.deleteTask(task.id) }
                 )
             }
         }
@@ -86,6 +88,7 @@ fun HomeScreen(
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
+                .padding(bottom = 14.dp)
         ) {
             Icon(
                 imageVector = Icons.Filled.Add,
@@ -93,6 +96,4 @@ fun HomeScreen(
             )
         }
     }
-
-
 }
