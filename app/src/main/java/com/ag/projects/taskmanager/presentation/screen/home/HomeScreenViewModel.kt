@@ -3,13 +3,13 @@ package com.ag.projects.taskmanager.presentation.screen.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag.projects.taskmanager.data.local.Task
-import com.ag.projects.taskmanager.domain.repository.TaskLocalRepository
+import com.ag.projects.taskmanager.domain.usecase.get_all.GetAllTasksUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
-    private val taskLocalRepository: TaskLocalRepository
+    private val getAllTasksUseCase: GetAllTasksUseCase
 ) : ViewModel() {
 
     private val _tasksState = MutableStateFlow<List<Task>>(emptyList())
@@ -17,7 +17,7 @@ class HomeScreenViewModel(
 
     fun getAllTasks() = viewModelScope.launch {
         try {
-            taskLocalRepository.getAllTasks().collect { tasks ->
+            getAllTasksUseCase().collect { tasks ->
                 _tasksState.emit(tasks)
             }
 

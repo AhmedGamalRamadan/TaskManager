@@ -4,7 +4,7 @@ import com.ag.projects.taskmanager.data.local.Task
 import com.ag.projects.taskmanager.domain.repository.TaskLocalRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetCompletedTasks(
+class GetCompletedTasksUseCase(
     private val taskLocalRepository: TaskLocalRepository
 ) {
     operator fun invoke(isCompleted: Boolean): Flow<List<Task>> =
