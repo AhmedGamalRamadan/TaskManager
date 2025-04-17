@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 class GetTasksSortedByTitle(
     private val taskLocalRepository: TaskLocalRepository
 ) {
-    suspend operator fun invoke(): Flow<List<Task>> =taskLocalRepository.getTasksSortedByTitle()
+     operator fun invoke(): Flow<List<Task>> =taskLocalRepository.getTasksSortedByTitle()
 
 }

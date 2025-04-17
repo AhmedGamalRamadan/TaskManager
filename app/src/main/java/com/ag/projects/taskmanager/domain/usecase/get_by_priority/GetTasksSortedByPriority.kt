@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class GetTasksSortedByPriority(
     private val taskLocalRepository: TaskLocalRepository
 ) {
-   suspend operator fun invoke(priority: Priority): Flow<List<Task>> =
+    operator fun invoke(priority: Priority): Flow<List<Task>> =
         taskLocalRepository.getTasksSortedByPriority(priority)
 
 }

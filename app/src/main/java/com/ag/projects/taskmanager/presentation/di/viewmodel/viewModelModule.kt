@@ -9,7 +9,9 @@ val viewModelModule = module {
     single {
         HomeScreenViewModel(
             get(),
-            get()
+            get(),
+            get(),
+            get(),
         )
     }
 
