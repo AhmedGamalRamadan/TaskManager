@@ -8,5 +8,7 @@ sealed class TaskActionFilter(val label: String) {
     data object Pending : TaskActionFilter("Pending")
     data object SortByTitle : TaskActionFilter("Sort By Title")
     data object SortByDate : TaskActionFilter("Sort By Date")
-    data class SortByPriority(val priority: Priority) : TaskActionFilter("Sort By ${priority.name.lowercase().replaceFirstChar { it.uppercase() }}")
+    data class SortByPriority(val priority: Priority) : TaskActionFilter(
+        "Sort By ${priority.name.lowercase().replaceFirstChar { it.uppercase() }}"
+    )
 }

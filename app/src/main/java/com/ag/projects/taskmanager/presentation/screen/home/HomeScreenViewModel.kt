@@ -11,10 +11,12 @@ import com.ag.projects.taskmanager.domain.usecase.get_by_sorted_date.GetTasksSor
 import com.ag.projects.taskmanager.domain.usecase.get_by_sorted_title.GetTasksSortedByTitle
 import com.ag.projects.taskmanager.domain.usecase.get_complete_tasks.GetCompletedTasksUseCase
 import com.ag.projects.taskmanager.domain.usecase.upsert.UpsertUseCase
+import com.ag.projects.taskmanager.utils.TaskState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
@@ -27,20 +29,25 @@ class HomeScreenViewModel(
     private val sortedByPriority: GetTasksSortedByPriority
 ) : ViewModel() {
 
-    private val _tasks = MutableStateFlow<List<Task>>(emptyList())
+    private val _tasks = MutableStateFlow(TaskState())
     val tasks = _tasks.onStart {
         getAllTasks()
     }.stateIn(
         viewModelScope,
         SharingStarted.Lazily,
-        emptyList()
+        TaskState()
     )
 
-     fun getAllTasks() {
+    fun getAllTasks() {
         viewModelScope.launch {
+            _tasks.update {
+                it.copy(isLoading = true)
+            }
             try {
-                getAllTasksUseCase().collect {
-                    _tasks.emit(it)
+                getAllTasksUseCase().collect { tasks ->
+                    _tasks.update {
+                        it.copy(tasks = tasks, isLoading = false)
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -50,10 +57,14 @@ class HomeScreenViewModel(
 
     fun getCompletedTasks(isCompleted: Boolean) {
         viewModelScope.launch {
+            _tasks.update {
+                it.copy(isLoading = true)
+            }
             try {
-                _tasks.emit(emptyList())
-                getCompletedTasksUseCase(isCompleted = isCompleted).collect {
-                    _tasks.emit(it)
+                getCompletedTasksUseCase(isCompleted = isCompleted).collect { tasks ->
+                    _tasks.update {
+                        it.copy(tasks = tasks, isLoading = false)
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -81,37 +92,52 @@ class HomeScreenViewModel(
         }
     }
 
-    fun getTasksSortedByTitle(){
+    fun getTasksSortedByTitle() {
+        _tasks.update {
+            it.copy(isLoading = true)
+        }
         viewModelScope.launch {
             try {
-                sortedByTitle().collect{
-                    _tasks.emit(it)
+                sortedByTitle().collect { tasks ->
+                    _tasks.update {
+                        it.copy(tasks = tasks, isLoading = false)
+                    }
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun getTasksSortedByPriority(priority: Priority){
+    fun getTasksSortedByPriority(priority: Priority) {
+        _tasks.update {
+            it.copy(isLoading = true)
+        }
         viewModelScope.launch {
             try {
-                sortedByPriority(priority).collect{
-                    _tasks.emit(it)
+                sortedByPriority(priority).collect { tasks ->
+                    _tasks.update {
+                        it.copy(tasks = tasks, isLoading = false)
+                    }
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun getTasksSortedByDate(){
+    fun getTasksSortedByDate() {
+        _tasks.update {
+            it.copy(isLoading = true)
+        }
         viewModelScope.launch {
             try {
-                sortedByDateUseCase().collect{
-                    _tasks.emit(it)
+                sortedByDateUseCase().collect { tasks ->
+                    _tasks.update {
+                        it.copy(tasks = tasks, isLoading = false)
+                    }
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }

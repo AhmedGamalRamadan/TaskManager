@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,10 +28,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.ag.projects.taskmanager.R
 import com.ag.projects.taskmanager.data.local.Priority
+import com.ag.projects.taskmanager.presentation.component.ShimmerListItem
 import com.ag.projects.taskmanager.presentation.component.TaskItem
 import com.ag.projects.taskmanager.utils.TaskActionFilter
 import kotlinx.coroutines.launch
@@ -74,7 +78,7 @@ fun HomeScreen(
                 .fillMaxSize()
         ) {
 
-            // for filter by completed , pending or All
+            // for filter by completed , pending or All and sorting as a tabs
             item {
                 LazyRow(
                     modifier = modifier
@@ -89,11 +93,16 @@ fun HomeScreen(
                                 selectedIndex = index
                                 when (filter) {
                                     is TaskActionFilter.All -> viewModel.getAllTasks()
-                                    is TaskActionFilter.Completed -> viewModel.getCompletedTasks(true)
+                                    is TaskActionFilter.Completed -> viewModel.getCompletedTasks(
+                                        true
+                                    )
+
                                     is TaskActionFilter.Pending -> viewModel.getCompletedTasks(false)
                                     is TaskActionFilter.SortByTitle -> viewModel.getTasksSortedByTitle()
                                     is TaskActionFilter.SortByDate -> viewModel.getTasksSortedByDate()
-                                    is TaskActionFilter.SortByPriority -> viewModel.getTasksSortedByPriority(filter.priority)
+                                    is TaskActionFilter.SortByPriority -> viewModel.getTasksSortedByPriority(
+                                        filter.priority
+                                    )
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(
@@ -108,26 +117,53 @@ fun HomeScreen(
             }
 
             // display all tasks
-            items(tasks, key = { it.id }) { task ->
+            if (tasks.tasks.isNotEmpty()) {
 
-                var isCompleted by remember {
-                    mutableStateOf(task.isCompleted)
+                items(tasks.tasks, key = { it.id }) { task ->
+
+                    var isCompleted by remember {
+                        mutableStateOf(task.isCompleted)
+                    }
+
+                    TaskItem(
+                        navHostController = navHostController,
+                        task = task,
+                        isCompleted = isCompleted,
+                        onCheckedChanged = { checked ->
+                            isCompleted = checked
+                            val updatedTask = task.copy(isCompleted = checked)
+
+                            scope.launch {
+                                viewModel.upsertTask(updatedTask)
+                            }
+                        },
+                        onDelete = { viewModel.deleteTask(task.id) }
+                    )
                 }
+            }
 
-                TaskItem(
-                    navHostController = navHostController,
-                    task = task,
-                    isCompleted = isCompleted,
-                    onCheckedChanged = { checked ->
-                        isCompleted = checked
-                        val updatedTask = task.copy(isCompleted = checked)
-
-                        scope.launch {
-                            viewModel.upsertTask(updatedTask)
-                        }
-                    },
-                    onDelete = { viewModel.deleteTask(task.id) }
-                )
+            if (tasks.tasks.isEmpty()){
+               item {
+                   Box(
+                       modifier = Modifier.fillMaxSize().padding(12.dp),
+                       contentAlignment = Alignment.Center
+                   ) {
+                       Icon(
+                           painter = painterResource(R.drawable.empty_tasks),
+                           contentDescription = "noTasksFounded",
+                           modifier = modifier
+                               .fillMaxWidth()
+                               .height(250.dp)
+                       )
+                   }
+               }
+            }
+            if (tasks.isLoading) {
+                items(8) {
+                    ShimmerListItem(
+                        isLoading = true,
+                    )
+                }
             }
         }
 

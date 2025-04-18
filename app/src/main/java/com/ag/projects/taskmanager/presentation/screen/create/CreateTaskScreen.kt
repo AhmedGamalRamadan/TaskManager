@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,19 +47,19 @@ fun CreateTaskScreen(
     val sdf = SimpleDateFormat("dd MMMM, yyyy -HH:mm")
     val currentDateAndTime :String = sdf.format(Date())
 
-    var title by remember {
+    var title by rememberSaveable {
         mutableStateOf("")
     }
 
-    var description by remember {
-        mutableStateOf<String>("")
+    var description by rememberSaveable {
+        mutableStateOf("")
     }
 
     val priorities = remember {
         mutableStateListOf(Priority.LOW, Priority.MEDIUM, Priority.HIGH)
     }
 
-    var selectedOption by remember { mutableStateOf(Priority.MEDIUM) }
+    var selectedOption by rememberSaveable { mutableStateOf(Priority.MEDIUM) }
 
     Column(
         modifier = Modifier
