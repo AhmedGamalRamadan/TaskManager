@@ -17,6 +17,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -69,15 +74,32 @@ fun HomeScreen(
         mutableIntStateOf(0)
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(12.dp),
-    ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
+//    val progress = if (tasks.tasks.size > 0) completedTasksCount.toFloat() / tasks else 0f
+
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackBarHostState) },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    navHostController.navigate(Screen.CreateTask)
+                },
+                modifier = Modifier.padding(bottom = 14.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Add"
+                )
+            }
+        }
+    ) { innerPadding ->
 
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
+                .padding(innerPadding),
         ) {
 
             // for filter by completed , pending or All and sorting as a tabs
@@ -139,27 +161,42 @@ fun HomeScreen(
                                 viewModel.upsertTask(updatedTask)
                             }
                         },
-                        onDelete = { viewModel.deleteTask(task.id) }
+                        onDelete = {
+                            scope.launch {
+                                viewModel.deleteTask(task.id)
+                                val result = snackBarHostState.showSnackbar(
+                                    message = "Task deleted",
+                                    actionLabel = "Undo",
+                                    duration = SnackbarDuration.Short
+                                )
+                                if (result == SnackbarResult.ActionPerformed) {
+                                    viewModel.upsertTask(task)
+                                }
+                            }
+
+                        }
                     )
                 }
             }
 
-            if (tasks.tasks.isEmpty()){
-               item {
-                   Box(
-                       modifier = Modifier.fillMaxSize().padding(12.dp),
-                       contentAlignment = Alignment.Center
-                   ) {
-                       Icon(
-                           painter = painterResource(R.drawable.empty_tasks),
-                           contentDescription = "noTasksFounded",
-                           modifier = modifier
-                               .fillMaxWidth()
-                               .height(250.dp),
-                           tint = Color.Blue
-                       )
-                   }
-               }
+            if (tasks.tasks.isEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(12.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.empty_tasks),
+                            contentDescription = "noTasksFounded",
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .height(250.dp),
+                            tint = Color.Blue
+                        )
+                    }
+                }
             }
             if (tasks.isLoading) {
                 items(8) {
@@ -169,20 +206,5 @@ fun HomeScreen(
                 }
             }
         }
-
-        FloatingActionButton(
-            onClick = {
-                navHostController.navigate(Screen.CreateTask)
-            },
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(bottom = 14.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Add,
-                contentDescription = "Add"
-            )
-        }
-
     }
 }
