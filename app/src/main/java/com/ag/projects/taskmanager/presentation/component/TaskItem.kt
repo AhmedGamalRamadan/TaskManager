@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.ag.projects.taskmanager.data.local.Task
-import com.ag.projects.taskmanager.utils.Route
+import com.ag.projects.taskmanager.utils.Screen
 
 @Composable
 fun TaskItem(
@@ -45,7 +45,9 @@ fun TaskItem(
             .defaultMinSize(minHeight = 100.dp)
             .padding(8.dp)
             .clickable {
-                navHostController.navigate(Route.DETAILS + "/${task.id}")
+                navHostController.navigate(
+                    Screen.TaskDetails(id = task.id)
+                )
             },
         colors = CardDefaults.cardColors(
             containerColor = Color.White

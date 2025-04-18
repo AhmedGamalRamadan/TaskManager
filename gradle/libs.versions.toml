@@ -15,6 +15,7 @@ koinAndroid = "3.2.0-beta-1"
 koinAndroidxCompose = "3.2.0-beta-1"
 koinAndroidxNavigation = "3.2.0-beta-1"
 koinTestJunit4 = "3.2.0-beta-1"
+
 serialization = "1.6.3"
 composeNavigation = "2.8.0-alpha08"
 
@@ -43,8 +44,9 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomKtx" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
 
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

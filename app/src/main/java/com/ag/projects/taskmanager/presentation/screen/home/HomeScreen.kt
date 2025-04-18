@@ -28,7 +28,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -38,7 +37,7 @@ import com.ag.projects.taskmanager.R
 import com.ag.projects.taskmanager.data.local.Priority
 import com.ag.projects.taskmanager.presentation.component.ShimmerListItem
 import com.ag.projects.taskmanager.presentation.component.TaskItem
-import com.ag.projects.taskmanager.utils.Route
+import com.ag.projects.taskmanager.utils.Screen
 import com.ag.projects.taskmanager.utils.TaskActionFilter
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -173,7 +172,7 @@ fun HomeScreen(
 
         FloatingActionButton(
             onClick = {
-                navHostController.navigate(Route.CREATE)
+                navHostController.navigate(Screen.CreateTask)
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)

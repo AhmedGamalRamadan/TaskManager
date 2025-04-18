@@ -71,8 +71,12 @@ fun TaskDetailsScreen(
         var description by rememberSaveable {
             mutableStateOf(task.description)
         }
-        var selectedOption by rememberSaveable { mutableStateOf(task.priority) }
 
+        var taskPriority by rememberSaveable { mutableStateOf(task.priority) }
+
+        var isCompleted by rememberSaveable {
+            mutableStateOf(task.isCompleted)
+        }
 
         Column(
             modifier = Modifier
@@ -104,13 +108,13 @@ fun TaskDetailsScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { selectedOption = option }
+                        .clickable { taskPriority = option }
                         .padding(8.dp)
                 ) {
                     Checkbox(
-                        checked = selectedOption == option,
+                        checked = taskPriority == option,
                         onCheckedChange = {
-                            selectedOption = option
+                            taskPriority = option
                         },
                         colors = CheckboxDefaults.colors(
                             checkedColor = Color.Green,
@@ -123,12 +127,37 @@ fun TaskDetailsScreen(
                 }
             }
 
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { isCompleted = !isCompleted}
+                    .padding(8.dp)
+            ) {
+                Checkbox(
+                    checked = isCompleted,
+                    onCheckedChange = {
+                        isCompleted = it
+                    },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = Color.Green,
+                    )
+                )
+                Text(
+                    text = "Is Completed",
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
+
+            Spacer(Modifier.height(8.dp))
+
             Button(
                 onClick = {
                     val updatedTask = task.copy(
                         title = title,
                         description = description,
-                        priority = selectedOption,
+                        priority = taskPriority,
+                        isCompleted = isCompleted,
                         createdAt = currentDateAndTime
                     )
                     viewModel.upsertTask(updatedTask)

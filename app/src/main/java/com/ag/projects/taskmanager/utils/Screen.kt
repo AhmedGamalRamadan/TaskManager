@@ -14,12 +14,7 @@ sealed interface Screen {
     @Serializable
     data object Settings : Screen
 
+    @Serializable
+    data class TaskDetails(val id: Int) : Screen
 
-}
-
-object Route {
-
-    const val HOME = "home"
-    const val CREATE = "create"
-    const val DETAILS = "details"
 }

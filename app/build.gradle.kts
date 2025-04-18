@@ -2,9 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-//    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
-    id("kotlinx-serialization")
+//    id("kotlinx-serialization")
 }
 
 android {
@@ -75,8 +75,6 @@ dependencies {
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.paging)
 
-    //serialization
-    implementation(libs.kotlinx.serialization.json)
 
 //    implementation(libs.plugins.kotlin.serialization)
     // Navigation
@@ -86,4 +84,7 @@ dependencies {
     // Extended Icons
     implementation(libs.androidx.material.icons.extended)
 
+    //serialization
+    implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 }
