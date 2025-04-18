@@ -153,7 +153,8 @@ fun HomeScreen(
                            contentDescription = "noTasksFounded",
                            modifier = modifier
                                .fillMaxWidth()
-                               .height(250.dp)
+                               .height(250.dp),
+                           tint = Color.Blue
                        )
                    }
                }

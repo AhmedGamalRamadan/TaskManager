@@ -41,7 +41,7 @@ class HomeScreenViewModel(
     fun getAllTasks() {
         viewModelScope.launch {
             _tasks.update {
-                it.copy(isLoading = true)
+                it.copy(tasks = emptyList(),isLoading = true)
             }
             try {
                 getAllTasksUseCase().collect { tasks ->
@@ -58,7 +58,7 @@ class HomeScreenViewModel(
     fun getCompletedTasks(isCompleted: Boolean) {
         viewModelScope.launch {
             _tasks.update {
-                it.copy(isLoading = true)
+                it.copy(tasks = emptyList(),isLoading = true)
             }
             try {
                 getCompletedTasksUseCase(isCompleted = isCompleted).collect { tasks ->
@@ -94,7 +94,7 @@ class HomeScreenViewModel(
 
     fun getTasksSortedByTitle() {
         _tasks.update {
-            it.copy(isLoading = true)
+            it.copy(tasks = emptyList(),isLoading = true)
         }
         viewModelScope.launch {
             try {
@@ -111,7 +111,7 @@ class HomeScreenViewModel(
 
     fun getTasksSortedByPriority(priority: Priority) {
         _tasks.update {
-            it.copy(isLoading = true)
+            it.copy(tasks = emptyList(),isLoading = true)
         }
         viewModelScope.launch {
             try {
@@ -128,7 +128,7 @@ class HomeScreenViewModel(
 
     fun getTasksSortedByDate() {
         _tasks.update {
-            it.copy(isLoading = true)
+            it.copy(tasks = emptyList(),isLoading = true)
         }
         viewModelScope.launch {
             try {
