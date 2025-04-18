@@ -7,35 +7,20 @@ import com.ag.projects.taskmanager.domain.usecase.get_by_sorted_date.GetTasksSor
 import com.ag.projects.taskmanager.domain.usecase.get_by_sorted_title.GetTasksSortedByTitle
 import com.ag.projects.taskmanager.domain.usecase.get_complete_tasks.GetCompletedTasksUseCase
 import com.ag.projects.taskmanager.domain.usecase.upsert.UpsertUseCase
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val useCaseModule = module {
 
-    single {
-        UpsertUseCase(get())
-    }
 
-    single {
-        DeleteUseCase(get())
-    }
+    singleOf(::UpsertUseCase)
+    singleOf(::DeleteUseCase)
 
-    single {
-        GetAllTasksUseCase(get())
-    }
+    singleOf(::GetAllTasksUseCase)
+    singleOf(::GetTasksSortedByPriority)
+    singleOf(::GetTasksSortedByDateUseCase)
 
-    single {
-        GetTasksSortedByPriority(get())
-    }
+    singleOf(::GetTasksSortedByTitle)
+    singleOf(::GetCompletedTasksUseCase)
 
-    single {
-        GetTasksSortedByDateUseCase(get())
-    }
-
-    single {
-        GetTasksSortedByTitle(get())
-    }
-
-    single {
-        GetCompletedTasksUseCase(get())
-    }
 }
