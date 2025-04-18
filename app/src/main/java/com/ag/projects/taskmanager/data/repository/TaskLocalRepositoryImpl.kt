@@ -37,4 +37,8 @@ class TaskLocalRepositoryImpl(
     override fun getTasksSortedByTitle(): Flow<List<Task>> {
         return taskDatabase.taskDao().getTasksSortedByTitle()
     }
+
+    override suspend fun getTaskDetails(id: Int): Task =
+         taskDatabase.taskDao().getTaskDetails(id)
+
 }

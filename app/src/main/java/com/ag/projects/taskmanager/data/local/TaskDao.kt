@@ -29,4 +29,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks ORDER BY title ASC")
     fun getTasksSortedByTitle(): Flow<List<Task>>
+
+    @Query("SELECT * FROM tasks WHERE id =:id")
+    suspend fun getTaskDetails(id: Int): Task
 }

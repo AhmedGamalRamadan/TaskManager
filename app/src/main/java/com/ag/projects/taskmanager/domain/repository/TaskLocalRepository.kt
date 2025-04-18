@@ -19,4 +19,6 @@ interface TaskLocalRepository {
     fun getTasksSortedByDueDate(): Flow<List<Task>>
 
     fun getTasksSortedByTitle(): Flow<List<Task>>
+
+    suspend fun getTaskDetails(id: Int): Task
 }
