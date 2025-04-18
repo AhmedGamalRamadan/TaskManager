@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
@@ -169,6 +170,21 @@ fun TaskDetailsScreen(
                 ) {
                 Text(
                     text = "Update Task"
+                )
+            }
+
+            Button(
+                onClick = {
+                    viewModel.deleteTask(task.id)
+                    navHostController.navigateUp()
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Red,
+                    contentColor = Color.White
+                )
+                ) {
+                Text(
+                    text = "Delete Task"
                 )
             }
         }
