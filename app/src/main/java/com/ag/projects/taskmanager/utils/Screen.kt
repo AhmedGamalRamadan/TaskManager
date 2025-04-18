@@ -6,13 +6,20 @@ import kotlinx.serialization.Serializable
 sealed interface Screen {
 
     @Serializable
-    data object Home :Screen
+    data object Home : Screen
 
     @Serializable
-    data object CreateTask :Screen
+    data object CreateTask : Screen
 
     @Serializable
-    data object Settings :Screen
+    data object Settings : Screen
 
 
+}
+
+object Route {
+
+    const val HOME = "home"
+    const val CREATE = "create"
+    const val DETAILS = "details"
 }
