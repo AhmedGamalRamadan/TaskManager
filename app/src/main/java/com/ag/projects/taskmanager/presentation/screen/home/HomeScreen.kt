@@ -42,6 +42,7 @@ import com.ag.projects.taskmanager.R
 import com.ag.projects.taskmanager.data.local.Priority
 import com.ag.projects.taskmanager.presentation.component.ShimmerListItem
 import com.ag.projects.taskmanager.presentation.component.TaskItem
+import com.ag.projects.taskmanager.presentation.ui.theme.Green
 import com.ag.projects.taskmanager.utils.Screen
 import com.ag.projects.taskmanager.utils.TaskActionFilter
 import kotlinx.coroutines.launch
@@ -74,10 +75,19 @@ fun HomeScreen(
         mutableIntStateOf(0)
     }
 
+//    (1..100).map {
+//        viewModel.upsertTask(
+//            Task(
+//                title = it.toString(),
+//                description = it.toString(),
+//                createdAt = it.toString(),
+//
+//            )
+//        )
+//    }
     val snackBarHostState = remember { SnackbarHostState() }
 
 //    val progress = if (tasks.tasks.size > 0) completedTasksCount.toFloat() / tasks else 0f
-
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackBarHostState) },
@@ -86,11 +96,13 @@ fun HomeScreen(
                 onClick = {
                     navHostController.navigate(Screen.CreateTask)
                 },
+                containerColor = Green,
                 modifier = Modifier.padding(bottom = 14.dp)
             ) {
                 Icon(
                     imageVector = Icons.Filled.Add,
-                    contentDescription = "Add"
+                    contentDescription = "Add",
+                    tint = Color.White
                 )
             }
         }
@@ -101,14 +113,13 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(innerPadding),
         ) {
-
             // for filter by completed , pending or All and sorting as a tabs
             item {
                 LazyRow(
                     modifier = modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
                 ) {
                     itemsIndexed(allFilters) { index, filter ->
                         val isSelected = selectedIndex == index
@@ -143,7 +154,7 @@ fun HomeScreen(
             // display all tasks
             if (tasks.tasks.isNotEmpty()) {
 
-                items(tasks.tasks, key = { it.id }) { task ->
+                items(tasks.tasks) { task ->
 
                     var isCompleted by remember {
                         mutableStateOf(task.isCompleted)

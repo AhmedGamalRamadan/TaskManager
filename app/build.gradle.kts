@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     id("kotlin-kapt")
-//    id("kotlinx-serialization")
 }
 
 android {
@@ -76,7 +75,6 @@ dependencies {
     implementation(libs.androidx.room.paging)
 
 
-//    implementation(libs.plugins.kotlin.serialization)
     // Navigation
     implementation(libs.androidx.navigation.compose)
 
@@ -87,4 +85,5 @@ dependencies {
     //serialization
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+
 }

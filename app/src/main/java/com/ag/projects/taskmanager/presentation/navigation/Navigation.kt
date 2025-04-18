@@ -37,7 +37,5 @@ fun Navigation(modifier: Modifier = Modifier) {
                 id = args.id
             )
         }
-
-
     }
 }

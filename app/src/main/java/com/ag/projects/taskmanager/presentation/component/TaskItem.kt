@@ -16,6 +16,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -37,8 +38,6 @@ fun TaskItem(
     onCheckedChanged: (Boolean) -> Unit,
     onDelete: (Int) -> Unit
 ) {
-
-
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -50,7 +49,7 @@ fun TaskItem(
                 )
             },
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 7.dp
@@ -84,6 +83,7 @@ fun TaskItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 22.sp,
+                    color = MaterialTheme.colorScheme.primary,
                     textDecoration =
                     if (task.isCompleted)
                         TextDecoration.LineThrough
@@ -103,13 +103,12 @@ fun TaskItem(
             }
 
             Row(
-                modifier = modifier
-                    .fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
-                Text(text = task.priority.toString())
-                Text(text = task.createdAt)
+                Text(text = task.priority.toString(), color = MaterialTheme.colorScheme.primary)
+                Text(text = task.createdAt, color = MaterialTheme.colorScheme.primary)
 
             }
         }

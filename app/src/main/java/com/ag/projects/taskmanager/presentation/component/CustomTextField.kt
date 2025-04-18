@@ -9,13 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.ag.projects.taskmanager.presentation.ui.theme.Black
+import com.ag.projects.taskmanager.presentation.ui.theme.White
 
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    label:String
+    label: String
 ) {
 
     OutlinedTextField(
@@ -26,8 +28,11 @@ fun CustomTextField(
             onValueChange(it)
         },
         colors = OutlinedTextFieldDefaults.colors(
-            unfocusedContainerColor = Color.White,
-            focusedContainerColor = Color.White,
+            unfocusedContainerColor = White,
+            focusedContainerColor = White,
+            focusedTextColor = Black,
+            unfocusedTextColor = Black,
+            cursorColor = Black
         ),
         label = { Text(text = label) },
         shape = RoundedCornerShape(15.dp)
