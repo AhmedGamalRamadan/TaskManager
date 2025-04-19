@@ -41,7 +41,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.ag.projects.taskmanager.R
 import com.ag.projects.taskmanager.data.local.Priority
-import com.ag.projects.taskmanager.data.local.Task
 import com.ag.projects.taskmanager.presentation.component.ShimmerListItem
 import com.ag.projects.taskmanager.presentation.component.TaskItem
 import com.ag.projects.taskmanager.presentation.ui.theme.Green
@@ -77,16 +76,6 @@ fun HomeScreen(
         mutableIntStateOf(0)
     }
 
-//    (1..10).map {
-//        viewModel.upsertTask(
-//            Task(
-//                title = it.toString(),
-//                description = it.toString(),
-//                createdAt = it.toString(),
-//
-//            )
-//        )
-//    }
     val snackBarHostState = remember { SnackbarHostState() }
 
     Scaffold(
