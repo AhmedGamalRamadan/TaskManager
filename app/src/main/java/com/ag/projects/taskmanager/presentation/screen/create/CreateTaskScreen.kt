@@ -1,10 +1,8 @@
 package com.ag.projects.taskmanager.presentation.screen.create
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,10 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -31,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ag.projects.taskmanager.data.local.Priority
@@ -66,16 +62,6 @@ fun CreateTaskScreen(
 
     var selectedOption by rememberSaveable { mutableStateOf(Priority.MEDIUM) }
 
-    val colors = remember {
-        mutableListOf(
-               Color.Green,
-               Color.Yellow,
-               Color.Cyan,
-               Color.Blue,
-               Color.Magenta,
-        )
-    }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -86,7 +72,7 @@ fun CreateTaskScreen(
     ) {
 
         CustomTextField(
-            modifier = modifier,
+            modifier = modifier.testTag("Title"),
             value = title,
             onValueChange = { title = it },
             label = "Title"
@@ -95,7 +81,7 @@ fun CreateTaskScreen(
         Spacer(Modifier.height(8.dp))
 
         CustomTextField(
-            modifier = modifier,
+            modifier = modifier.testTag("Description"),
             value = description,
             onValueChange = { description = it },
             label = "Description"
@@ -116,28 +102,13 @@ fun CreateTaskScreen(
                     },
                     colors = CheckboxDefaults.colors(
                         checkedColor = Color.Green,
-                    )
+                    ),
+                    modifier = modifier.testTag(selectedOption.name)
                 )
                 Text(
                     text = option.toString(),
                     modifier = Modifier.padding(start = 8.dp)
                 )
-            }
-        }
-
-        colors.forEach { color->
-            LazyRow(
-                modifier = modifier
-                    .fillMaxWidth()
-            ) {
-                items(colors.size){
-                    Box(
-                        modifier = Modifier.wrapContentSize()
-                            .background(color, shape = CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                    }
-                }
             }
         }
 
@@ -162,4 +133,3 @@ fun CreateTaskScreen(
         }
     }
 }
-

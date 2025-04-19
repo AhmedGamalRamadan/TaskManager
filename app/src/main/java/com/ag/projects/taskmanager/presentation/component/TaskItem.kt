@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -73,7 +74,9 @@ fun TaskItem(
                     },
                     colors = CheckboxDefaults.colors(
                         checkedColor = Color.Green,
-                    )
+                    ),
+                    modifier = modifier
+                        .testTag("CheckBoxIsCompleted")
                 )
 
                 Text(
@@ -95,6 +98,7 @@ fun TaskItem(
                     contentDescription = "Delete",
                     tint = Color.Red,
                     modifier = modifier
+                        .testTag("DeleteTask")
                         .size(40.dp)
                         .clickable {
                             onDelete(task.id)

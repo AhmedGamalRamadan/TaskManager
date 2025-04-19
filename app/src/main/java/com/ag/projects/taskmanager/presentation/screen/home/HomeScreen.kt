@@ -34,12 +34,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.ag.projects.taskmanager.R
 import com.ag.projects.taskmanager.data.local.Priority
+import com.ag.projects.taskmanager.data.local.Task
 import com.ag.projects.taskmanager.presentation.component.ShimmerListItem
 import com.ag.projects.taskmanager.presentation.component.TaskItem
 import com.ag.projects.taskmanager.presentation.ui.theme.Green
@@ -75,7 +77,7 @@ fun HomeScreen(
         mutableIntStateOf(0)
     }
 
-//    (1..100).map {
+//    (1..10).map {
 //        viewModel.upsertTask(
 //            Task(
 //                title = it.toString(),
@@ -86,8 +88,6 @@ fun HomeScreen(
 //        )
 //    }
     val snackBarHostState = remember { SnackbarHostState() }
-
-//    val progress = if (tasks.tasks.size > 0) completedTasksCount.toFloat() / tasks else 0f
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackBarHostState) },
@@ -143,9 +143,12 @@ fun HomeScreen(
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = if (isSelected) Color.Blue else Color.White,
                                 contentColor = if (isSelected) Color.White else Color.Black,
-                            )
+                            ),
+                            modifier = modifier.testTag(filter.label)
                         ) {
-                            Text(text = filter.label)
+                            Text(
+                                text = filter.label,
+                            )
                         }
                     }
                 }
@@ -153,7 +156,6 @@ fun HomeScreen(
 
             // display all tasks
             if (tasks.tasks.isNotEmpty()) {
-
                 items(tasks.tasks) { task ->
 
                     var isCompleted by remember {
@@ -188,32 +190,29 @@ fun HomeScreen(
                         }
                     )
                 }
-            }
-
-            if (tasks.tasks.isEmpty()) {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(12.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.empty_tasks),
-                            contentDescription = "noTasksFounded",
-                            modifier = modifier
-                                .fillMaxWidth()
-                                .height(250.dp),
-                            tint = Color.Blue
+            } else {
+                // show shimmer effect if tasks loading
+                if (tasks.isLoading) {
+                    items(8) {
+                        ShimmerListItem(
+                            isLoading = true,
                         )
                     }
-                }
-            }
-            if (tasks.isLoading) {
-                items(8) {
-                    ShimmerListItem(
-                        isLoading = true,
-                    )
+                } else {
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.empty_tasks),
+                                contentDescription = "EmptyTasks",
+                                modifier = modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                            )
+                        }
+                    }
                 }
             }
         }
